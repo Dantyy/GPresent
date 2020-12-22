@@ -1,0 +1,36 @@
+/*全局样式表*/
+html,
+body,
+#app {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    min-width: 1366px;
+    overflow-x: hidden;
+}
+
+/*去掉列表前面的小点*/
+li {
+    list-style: none;
+}
+
+/*取消链接的下划线*/
+a {
+    color: #666;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #e33333;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+li,
+h1,
+h2 {
+    color: rgb(6, 25, 41);
+}
