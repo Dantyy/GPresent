@@ -4,49 +4,55 @@
     <el-container>
       <!-- 页头 -->
       <el-header>
+        <!-- 顶端灰色导航 -->
         <el-row type="flex" justify="space-between" class="row1">
-          <el-col :span="6" style="padding-left: 95px">
+          <el-col :span="6" style="padding-left:100px">
             <ul>
               <li>GPresent欢迎您!</li>
               <li>
                 <a href="#">请登录</a>
-                <a href="#" class="style-red">免费注册</a>
+                <a href="#" class="color: red">免费注册</a>
               </li>
             </ul>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="7">
             <ul>
               <li><a href="#">我的订单</a></li>
-              <li class="spacer"></li>
               <li><a href="#">GP会员</a></li>
-              <li class="spacer"></li>
               <li><a href="#">企业采购</a></li>
-              <li class="spacer"></li>
               <li>
                 <a href="#"> 客户服务<i class="el-icon-arrow-down"></i> </a>
               </li>
-              <li class="spacer"></li>
               <li>
                 <a href="#"> 网站导航<i class="el-icon-arrow-down"></i> </a>
               </li>
             </ul>
           </el-col>
         </el-row>
-        <el-row type="flex" justify="space-around">
+        <!-- logo、搜索、购物车、意向清单 -->
+        <el-row type="flex" justify="space-between" class="w">
           <el-col :span="4">
             <h1>GPresent</h1>
             <!-- 页面logo -->
             <img src="../assets/logo.png" alt="" class="logo" />
           </el-col>
-          <el-col :span="10">
-            <el-input placeholder="请输入内容">
+          <el-col :span="12">
+            <!-- 搜索框 -->
+            <el-input placeholder="请输入内容" style="margin: 15px;">
               <el-button slot="append" icon="el-icon-search"></el-button>
             </el-input>
           </el-col>
           <el-col :span="6">
-            <el-button class="shopcar" type="danger" plain>
-              <i class="el-icon-shopping-cart-full"></i>
-              我的购物车
+            <!-- 购物车 -->
+            <el-button class="shopcar" type="danger" plain style="margin: 15px 10px 0 0;" round>
+              <i class="el-icon-shopping-cart-full" style="margin-right: 5px;"></i>
+              购物车
+              <i class="el-icon-arrow-right"></i>
+            </el-button>
+            <!-- 意向清单 -->
+            <el-button type="danger" plain style="margin-top: 15px;" round>
+              <i class="el-icon-present" style="margin-right: 5px;"></i>
+              意向清单
               <i class="el-icon-arrow-right"></i>
             </el-button>
           </el-col>
@@ -76,7 +82,7 @@
           <div class="goods-header">
             <h2>
               猜你喜欢
-              <a href="#" style="font-size: 18px; color: #2b72bf">
+              <a href="#/goodlist" style="font-size: 18px; color: #2b72bf">
                 查看更多产品
                 <i class="el-icon-right"></i>
               </a>
@@ -184,7 +190,7 @@
       </el-main>
       <!-- 页脚 -->
       <el-footer>
-        <el-row>
+        <el-row style="background-color: #d83d2e;">
           <el-col :span="10" style="float: left; padding: 40px 0 0 100px;">
             <h2>心动不如行动，赶紧来</h2>
             <el-button type="danger" plain>开始你的注册表</el-button>
@@ -193,8 +199,8 @@
               <a href="#" style="text-decoration:underline;">登录</a>
             </h3>
           </el-col>
-          <el-col :span="14" style="float: right; height: 267px">
-            <img src="../assets/img/footer.png" alt="" />
+          <el-col :span="14" style="float: right;  height: 270px;">
+            <img src="../assets/img/footer.png" alt="" style="width: 840px; height: 270px;"/>
           </el-col>
         </el-row>
       </el-footer>
@@ -213,22 +219,35 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.w {
-  margin: 0 100px 0 100px;
+.el-header {
+  padding: 0;
+  height: 100px !important;
+  h1 {
+    display: inline-block;
+    margin: 20px 6px 10px 6px;
+    color: rgb(228, 133, 148);
+  }
+  img {
+    float: left;
+  }
+  ul {
+    padding: 0px;
+    li {
+      display: inline-block;
+      color: rgb(102, 102, 102);
+      font-size: 13px;
+      margin-right: 10px;
+      a {
+        margin-left: 2px;
+        padding: 0;
+      }
+    }
+  }
 }
 .row1 {
   background-color: #f1f1f1;
   height: 30px;
   padding-top: 5px;
-}
-.spacer {
-  width: 1px;
-  height: 13px;
-  background-color: #666;
-  margin: 2px 8px 0;
-}
-.style-red {
-  color: red;
 }
 .logo {
   display: block;
@@ -237,44 +256,18 @@ export default {
   height: 50px;
   width: 50px;
 }
-el-header {
-  h1 {
-    display: block;
-    float: right;
-    margin: 20px 6px 10px 6px;
-    color: rgb(228, 133, 148);
-  }
-  li {
-    float: left;
-    color: rgb(102, 102, 102);
-    font-size: 13px;
-    margin: 0 2px 0 0;
-    a {
-      margin: 0 0 0 2px;
-    }
-  }
-}
 
-.el-input {
-  margin: 15px;
-}
-.shopcar {
-  margin-top: 15px;
-}
-.el-icon-shopping-cart-full {
-  margin-right: 5px;
-}
 .hero {
-  margin: -20px 0 30px 0;
+  margin-top: -20px;
+  margin-bottom:30px;
   height: 520px;
   width: 1440px;
   background: url(../assets/img/hero.png) no-repeat;
   .hero-text {
-    position: relative;
-    left: 100px;
-    top: 80px;
+    padding-left: 100px;
+    padding-top: 68px;
     ul {
-      margin: 30px 0 30px 0;
+      margin: 30px 0;
       li {
         font-size: 16px;
         line-height: 30px;
@@ -288,7 +281,7 @@ el-header {
 }
 .goods {
   .goods-img {
-    width: 100;
+    width: 100%;
     height: 250px;
   }
 }
@@ -304,7 +297,8 @@ el-header {
     margin-top: 10px;
   }
 }
-el-footer {
+.el-footer {
+  background-color: #d83d2e;
   h2,
   h3,
   a {
@@ -312,13 +306,6 @@ el-footer {
   }
   a {
     text-decoration: underline;
-  }
-  .el-row {
-    background-color: #d83d2e;
-  }
-  img {
-    width: 840px;
-    height: 267px;
   }
 }
 </style>

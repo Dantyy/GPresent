@@ -10,7 +10,18 @@ import {
   MenuItem,
   Row,
   Col,
-  Card
+  Card,
+  Tabs,
+  TabPane,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+  Container,
+  Header,
+  Main,
+  Footer,
+  Backtop,
+  Pagination
 } from 'element-ui'
 
 Vue.use(Button)
@@ -24,3 +35,14 @@ Vue.use(MenuItem)
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(Card)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Dropdown)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)
+Vue.use(Container)
+Vue.use(Header)
+Vue.use(Main)
+Vue.use(Footer)
+Vue.use(Backtop)
+Vue.use(Pagination)
