@@ -61,46 +61,34 @@
       <el-main>
         <!-- 导航栏 -->
         <div class="nav w">
-          <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect">
+          <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <!-- 一级菜单 -->
-            <el-menu-item :index="item.id + ''" v-for="item in catelist" :key="item.id">
+            <el-menu-item :index="item.cat_id + ''" v-for="item in catelist" :key="item.cat_id">
               <template slot="title">
-              <!-- 文本 -->
-              <span>{{ item.cat_name }}</span>
-            </template>
+                <!-- 文本 -->
+                <span>{{ item.cat_name }}</span>
+              </template>
             </el-menu-item>
-            <!-- <el-submenu index="2">
-              <template slot="title">我的工作台</template>
-              <el-menu-item index="2-1">选项1</el-menu-item>
-              <el-menu-item index="2-2">选项2</el-menu-item>
-              <el-menu-item index="2-3">选项3</el-menu-item>
-              <el-submenu index="2-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="2-4-1">选项1</el-menu-item>
-                <el-menu-item index="2-4-2">选项2</el-menu-item>
-                <el-menu-item index="2-4-3">选项3</el-menu-item>
-              </el-submenu>
-            </el-submenu> -->
-            <!-- <el-menu-item index="3" disabled>消息中心</el-menu-item> -->
-            <!-- <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item> -->
           </el-menu>
         </div>
         <!-- 产品展示 -->
         <div class="goods w">
           <el-row :gutter="30">
             <!-- 第一个商品 -->
-            <el-col :span="4" v-for="o in 24" :key="o" style="margin-top: 20px">
-              <!-- <el-col> -->
-              <el-card :body-style="{ padding: '0px' }" shadow="hover">
-                <img src="../assets/img/advice1.png" class="image" />
-                <div style="padding: 14px;">
-                  <span>好吃的汉堡</span>
-                  <div class="bottom">
-                    111
+            <div :index="item.goods_id + ''" v-for="item in goodlist" :key="item.goods_id">
+              <el-col :span="4" style="margin-top: 20px">
+                <!-- <el-col> -->
+                <el-card :body-style="{ padding: '0px' }" shadow="hover">
+                  <img src="../assets/img/advice1.png" class="image" />
+                  <div style="padding: 14px;">
+                    <span> {{item.goods_name}} </span>
+                    <div class="bottom">
+                      111111
+                    </div>
                   </div>
-                </div>
-              </el-card>
-            </el-col>
+                </el-card>
+              </el-col>
+            </div>
           </el-row>
         </div>
         <!-- 分页区域 -->
@@ -113,32 +101,54 @@
 <script>
 export default {
   data() {
+    // if (this.goodlist.goods_name.length() > 10) {
+    //   this.goodlist.goods_name = this.goodlist.goods_name.substr(0, 10)
+    // }
     return {
-      // 查询参数对象
-      queryInfo: {
+      // 类别的查询参数对象
+      cateQueryInfo: {
         type: 1,
         pagenum: 1,
         pagesize: 10
       },
+      // 产品的查询参数对象
+      goodQueryInfo: {
+        query: '',
+        pagenum: 1,
+        pagesize: 24
+      },
       // 商品分类的数据列表，默认为空
       catelist: [],
+      // 商品的数据列表，默认为空
+      goodlist: [],
       activeIndex: '1'
     }
   },
   created() {
     this.getMenuList()
+    this.getGoodList()
   },
   methods: {
     async getMenuList() {
       const { data: res } = await this.$http.get('categories', {
-        params: this.queryInfo
+        params: this.cateQueryInfo
       })
       if (res.meta.status !== 200) {
         return this.$message.error('无法获取菜单栏')
       }
       this.catelist = res.data.result
-      // console.log(res.data)
-      console.log(this.catelist.[0].cat_name)
+      console.log(this.catelist)
+      // console.log(this.catelist.[0].cat_name)
+    },
+    async getGoodList() {
+      const { data: res } = await this.$http.get('goods', {
+        params: this.goodQueryInfo
+      })
+      if (res.meta.status !== 200) {
+        return this.$message.error('获取商品参数失败')
+      }
+      this.goodlist = res.data.goods
+      console.log(this.goodlist)
     },
     handleSelect(key, keyPath) {
       console.log(key, keyPath)

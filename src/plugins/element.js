@@ -21,7 +21,9 @@ import {
   Main,
   Footer,
   Backtop,
-  Pagination
+  Pagination,
+  Table,
+  TableColumn
 } from 'element-ui'
 
 Vue.use(Button)
@@ -46,3 +48,5 @@ Vue.use(Main)
 Vue.use(Footer)
 Vue.use(Backtop)
 Vue.use(Pagination)
+Vue.use(Table)
+Vue.use(TableColumn)

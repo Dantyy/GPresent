@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '../components/login.vue'
 import Home from '../components/home.vue'
 import Goodlist from '../components/goodlist.vue'
+import Shopcar from '../components/shopcar.vue'
 
 Vue.use(Router)
 
@@ -10,7 +11,8 @@ const router = new Router({
   routes: [
     { path: '/login', component: Login },
     { path: '/home', component: Home },
-    { path: '/goodlist', component: Goodlist }
+    { path: '/goodlist', component: Goodlist },
+    { path: '/shopcar', component: Shopcar }
   ]
 })
 
