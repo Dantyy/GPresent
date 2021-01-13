@@ -64,7 +64,7 @@
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <!-- 一级菜单 -->
             <el-menu-item :index="item.cat_id + ''" v-for="item in catelist" :key="item.cat_id">
-              <template slot="title">
+              <template>
                 <!-- 文本 -->
                 <span>{{ item.cat_name }}</span>
               </template>
@@ -92,7 +92,7 @@
           </el-row>
         </div>
         <!-- 分页区域 -->
-        <el-pagination background layout="prev, pager, next" :total="1000" style="text-align: center; margin-bottom: 30px;"> </el-pagination>
+        <el-pagination @current-change="handleCurrentChange" background layout="prev, pager, next" :total="total" style="text-align: center; margin-bottom: 30px;"> </el-pagination>
       </el-main>
     </el-container>
   </div>
@@ -109,7 +109,7 @@ export default {
       cateQueryInfo: {
         type: 1,
         pagenum: 1,
-        pagesize: 10
+        pagesize: 15
       },
       // 产品的查询参数对象
       goodQueryInfo: {
@@ -121,7 +121,8 @@ export default {
       catelist: [],
       // 商品的数据列表，默认为空
       goodlist: [],
-      activeIndex: '1'
+      activeIndex: '0',
+      total: 0
     }
   },
   created() {
@@ -137,7 +138,9 @@ export default {
         return this.$message.error('无法获取菜单栏')
       }
       this.catelist = res.data.result
-      console.log(this.catelist)
+      // console.log(this.catelist)
+      this.total = res.data.total * 10
+      // console.log(this.total)
       // console.log(this.catelist.[0].cat_name)
     },
     async getGoodList() {
@@ -152,6 +155,10 @@ export default {
     },
     handleSelect(key, keyPath) {
       console.log(key, keyPath)
+    },
+    handleCurrentChange(newPage) {
+      this.goodQueryInfo.pagenum = newPage
+      this.getGoodList()
     }
   }
 }
