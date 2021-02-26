@@ -48,3 +48,16 @@ h1,
 h2 {
     color: rgb(6, 25, 41);
 }
+
+/* 以下是针对wishlist页面的表格样式 */
+.cell {
+    text-align: center;
+}
+td.el-table_1_column_1 .cell{
+    text-align: left;
+} 
+th > .cell {
+    font-weight: bolder;
+    color: black;
+    text-align: center;
+}

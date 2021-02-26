@@ -52,7 +52,7 @@
         </el-row>
       </el-header>
       <el-main class="w">
-        <el-table :data="tableData" style="width: 100%">
+        <el-table :data="Data" style="width: 100%">
           <el-table-column prop="goods_name" label="商品名称" width="520"> </el-table-column>
           <el-table-column prop="goods_price" label="价格" width="180"> </el-table-column>
           <el-table-column prop="goods_num" label="数量" width="180"> </el-table-column>

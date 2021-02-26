@@ -8,10 +8,15 @@
         <el-row type="flex" justify="space-between" class="row1">
           <el-col :span="6" style="padding-left:100px">
             <ul>
-              <li>GPresent欢迎您!</li>
               <li>
-                <a href="#">请登录</a>
-                <a href="#" class="color: red">免费注册</a>
+                <p>GPresent欢迎您!</p>
+              </li>
+              <li v-if="showLoginBtn">
+                <el-button type="text" @click="loginDialogVisible = true" style="float: left">请登录</el-button>
+                <el-button type="text" @click="signupDialogVisible = true" style="float: left" class="color: red">免费注册</el-button>
+              </li>
+              <li v-else>
+                <el-button type="text" @click="logout">退出</el-button>
               </li>
             </ul>
           </el-col>
@@ -29,7 +34,7 @@
             </ul>
           </el-col>
         </el-row>
-        <!-- logo、搜索、购物车、意向清单 -->
+        <!-- logo、搜索、购物车、愿望清单 -->
         <el-row type="flex" justify="space-between" class="w">
           <el-col :span="4">
             <h1>GPresent</h1>
@@ -43,16 +48,10 @@
             </el-input>
           </el-col>
           <el-col :span="6">
-            <!-- 购物车 -->
-            <el-button class="shopcar" type="danger" plain style="margin: 15px 10px 0 0;" round>
-              <i class="el-icon-shopping-cart-full" style="margin-right: 5px;"></i>
-              购物车
-              <i class="el-icon-arrow-right"></i>
-            </el-button>
-            <!-- 意向清单 -->
-            <el-button type="danger" plain style="margin-top: 15px;" round>
-              <i class="el-icon-present" style="margin-right: 5px;"></i>
-              意向清单
+            <!-- 愿望清单 -->
+            <el-button @click="pushWishlist" type="danger" plain style="margin-top: 15px" round>
+              <i class="el-icon-present" style=""></i>
+              愿望清单
               <i class="el-icon-arrow-right"></i>
             </el-button>
           </el-col>
@@ -70,10 +69,10 @@
               <li><i class="el-icon-money"></i>所有操作完全免费</li>
             </ul>
             <div class="hero-buttons">
-              <el-button type="danger" style="margin-right: 20px">注册一个新账号</el-button>
+              <el-button @click="signupDialogVisible = true" type="danger" style="margin-right: 20px">注册一个新账号</el-button>
               <el-button type="danger" plain>寻找朋友</el-button>
               <ul>
-                <li style="margin-top: -20px">已经是我们网站的会员？ <a href="#">登录</a></li>
+                <li style="margin-top: -20px">已经是我们网站的会员？ <el-button type="text" @click="loginDialogVisible = true" style="color: grey">登录</el-button></li>
               </ul>
             </div>
           </div>
@@ -82,10 +81,10 @@
           <div class="goods-header">
             <h2>
               猜你喜欢
-              <a href="#/goodlist" style="font-size: 18px; color: #2b72bf">
+              <el-button @click="pushGoodlist" type="text" style="font-size: 18px; color: #2b72bf">
                 查看更多产品
                 <i class="el-icon-right"></i>
-              </a>
+              </el-button>
             </h2>
           </div>
           <el-row type="flex" justify="space-around">
@@ -193,17 +192,55 @@
         <el-row style="background-color: #d83d2e;">
           <el-col :span="10" style="float: left; padding: 40px 0 0 100px;">
             <h2>心动不如行动，赶紧来</h2>
-            <el-button type="danger" plain>开始你的注册表</el-button>
+            <el-button @click="signupDialogVisible = true" type="danger" plain>开始你的注册表</el-button>
             <h3>
               已经是会员？
-              <a href="#" style="text-decoration:underline;">登录</a>
+              <el-button @click="loginDialogVisible = true" type="text" style="text-decoration:underline;">登录</el-button>
             </h3>
           </el-col>
           <el-col :span="14" style="float: right;  height: 270px;">
-            <img src="../assets/img/footer.png" alt="" style="width: 840px; height: 270px;"/>
+            <img src="../assets/img/footer.png" alt="" style="width: 840px; height: 270px;" />
           </el-col>
         </el-row>
       </el-footer>
+      <!-- dialog section -->
+      <!-- login -->
+      <el-dialog title="登录" :visible.sync="loginDialogVisible" width="30%">
+        <!-- 登陆表单区域 -->
+        <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_form">
+          <!-- 用户名 -->
+          <el-form-item prop="username">
+            <el-input v-model="loginForm.username" prefix-icon="el-icon-user-solid"></el-input>
+          </el-form-item>
+          <!-- 密码 -->
+          <el-form-item prop="password">
+            <el-input v-model="loginForm.password" prefix-icon="el-icon-lock" type="password"></el-input>
+          </el-form-item>
+          <!-- 按钮区域 -->
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="loginDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="login">登 录</el-button>
+        </span>
+      </el-dialog>
+      <!-- sign up -->
+      <el-dialog title="注册用户" :visible.sync="signupDialogVisible" width="50%">
+        <el-form ref="form" :model="form" label-width="90px">
+          <el-form-item label="用户名">
+            <el-input v-model="form.name"></el-input>
+          </el-form-item>
+          <el-form-item label="输入密码">
+            <el-input type="password" v-model="form.psw"></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱">
+            <el-input v-model="form.email"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="signupDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="signupDialogVisible = false">登 录</el-button>
+        </span>
+      </el-dialog>
     </el-container>
   </div>
 </template>
@@ -211,10 +248,75 @@
 <script>
 export default {
   data() {
-    return {}
+    return {
+      loginDialogVisible: false,
+      signupDialogVisible: false,
+      // 获取到的token
+      tokenStr: '',
+      showLoginBtn: true,
+      form: {
+        name: '',
+        psw: '',
+        email: ''
+      },
+      // 这是登录表单的数据绑定对象
+      loginForm: {
+        username: 'admin',
+        password: '123456'
+      },
+      // 这是表单的验证规则对象
+      loginFormRules: {
+        // 验证用户名是否合法
+        username: [
+          { required: true, message: '请输入登录名称', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+        ],
+        // 验证密码是否合法
+        password: [
+          { required: true, message: '请输入登录密码', trigger: 'blur' },
+          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
+        ]
+      }
+    }
   },
   created() {},
-  methods: {}
+  methods: {
+    login() {
+      this.$refs.loginFormRef.validate(async valid => {
+        console.log(window.sessionStorage.token)
+        if (!valid) return
+        const { data: res } = await this.$http.post('login', this.loginForm)
+        console.log(res)
+        if (res.meta.status !== 200) return this.$message.error('登录失败！')
+        this.$message.success('登录成功')
+        // 1. 将登录成功之后的 token，保存到客户端的 sessionStorage 中
+        //   1.1 项目中出了登录之外的其他API接口，必须在登录之后才能访问
+        //   1.2 token 只应在当前网站打开期间生效，所以将 token 保存在 sessionStorage 中
+        window.sessionStorage.setItem('token', res.data.token)
+        this.tokenStr = window.sessionStorage.token
+        this.showLoginBtn = false
+        this.loginDialogVisible = false
+      })
+    },
+    logout() {
+      this.tokenStr = ''
+      this.showLoginBtn = true
+    },
+    pushWishlist() {
+      if (this.tokenStr === '') {
+        this.loginDialogVisible = true
+      } else {
+        this.$router.push('/wishlist')
+      }
+    },
+    pushGoodlist() {
+      if (this.tokenStr === '') {
+        this.loginDialogVisible = true
+      } else {
+        this.$router.push('/goodlist')
+      }
+    }
+  }
 }
 </script>
 
@@ -233,15 +335,22 @@ export default {
   ul {
     padding: 0px;
     li {
-      display: inline-block;
+      float: left;
       color: rgb(102, 102, 102);
       font-size: 13px;
       margin-right: 10px;
-      a {
-        margin-left: 2px;
+      p {
+        margin: 0;
+      }
+      .el-button {
+        float: left;
+        margin: 3px 2px;
         padding: 0;
       }
     }
+  }
+  .wishlistItem {
+    margin-bottom: -15px !important;
   }
 }
 .row1 {
@@ -259,7 +368,7 @@ export default {
 
 .hero {
   margin-top: -20px;
-  margin-bottom:30px;
+  margin-bottom: 30px;
   height: 520px;
   width: 1440px;
   background: url(../assets/img/hero.png) no-repeat;

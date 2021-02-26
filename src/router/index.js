@@ -4,6 +4,7 @@ import Login from '../components/login.vue'
 import Home from '../components/home.vue'
 import Goodlist from '../components/goodlist.vue'
 import Shopcar from '../components/shopcar.vue'
+import Wishlist from '../components/wishlist.vue'
 
 Vue.use(Router)
 
@@ -12,7 +13,8 @@ const router = new Router({
     { path: '/login', component: Login },
     { path: '/home', component: Home },
     { path: '/goodlist', component: Goodlist },
-    { path: '/shopcar', component: Shopcar }
+    { path: '/shopcar', component: Shopcar },
+    { path: '/wishlist', component: Wishlist }
   ]
 })
 
@@ -23,10 +25,10 @@ router.beforeEach((to, from, next) => {
   // next 是一个函数，表示放行
   //     next()  放行    next('/login')  强制跳转
 
-  if (to.path === '/login') return next()
+  if (to.path === '/home') return next()
   // 获取token
   const tokenStr = window.sessionStorage.getItem('token')
-  if (!tokenStr) return next('/login')
+  if (!tokenStr) return next('/home')
   next()
 })
 

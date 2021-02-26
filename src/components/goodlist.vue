@@ -10,8 +10,7 @@
             <ul>
               <li>GPresent欢迎您!</li>
               <li>
-                <a href="#">请登录</a>
-                <a href="#" class="color: red">免费注册</a>
+                <el-button type="text" @click="logout" style="padding: 0;">退出</el-button>
               </li>
             </ul>
           </el-col>
@@ -29,7 +28,7 @@
             </ul>
           </el-col>
         </el-row>
-        <!-- logo、搜索、购物车、意向清单 -->
+        <!-- logo、搜索、购物车、愿望清单 -->
         <el-row type="flex" justify="space-between" class="w">
           <el-col :span="4">
             <h1>GPresent</h1>
@@ -43,16 +42,14 @@
             </el-input>
           </el-col>
           <el-col :span="6">
-            <!-- 购物车 -->
-            <el-button class="shopcar" type="danger" plain style="margin: 15px 10px 0 0;" round>
-              <i class="el-icon-shopping-cart-full" style="margin-right: 5px;"></i>
-              购物车
+            <!-- 愿望清单 & 邀请页面 -->
+            <el-button @click="pushWishlist" type="danger" plain style="margin-top: 15px;">
+              <i class="el-icon-present" style="margin-right: 5px;"></i>
+              愿望清单
               <i class="el-icon-arrow-right"></i>
             </el-button>
-            <!-- 意向清单 -->
-            <el-button type="danger" plain style="margin-top: 15px;" round>
-              <i class="el-icon-present" style="margin-right: 5px;"></i>
-              意向清单
+            <el-button @click="pushGV" type="danger" plain style="margin-top: 15px;">
+              邀请页面
               <i class="el-icon-arrow-right"></i>
             </el-button>
           </el-col>
@@ -73,18 +70,21 @@
         </div>
         <!-- 产品展示 -->
         <div class="goods w">
-          <el-row :gutter="30">
-            <!-- 第一个商品 -->
+          <el-row :gutter="20">
             <div :index="item.goods_id + ''" v-for="item in goodlist" :key="item.goods_id">
               <el-col :span="4" style="margin-top: 20px">
-                <!-- <el-col> -->
                 <el-card :body-style="{ padding: '0px' }" shadow="hover">
                   <img src="../assets/img/advice1.png" class="image" />
                   <div style="padding: 14px;">
-                    <span> {{item.goods_name}} </span>
-                    <div class="bottom">
-                      111111
-                    </div>
+                    <div class="goods-name" v-if="item.goods_name !== undefined && item.goods_name.length > 17">{{ item.goods_name.substr(0, 17) }}...</div>
+                    <div class="goods-name" v-else>{{ item.goods_name }}</div>
+                    <div style="text-align:right; margin-bottom: 5px">¥ {{ item.goods_price }}</div>
+                      <el-button v-if="item.goods_state == 1" @click="removeFromWishlist(item)" size="mini" type="danger" style="float: right; margin-bottom: 14px">
+                        - 移出清单
+                      </el-button>
+                      <el-button v-else @click="addToWishlist(item)" size="mini" type="danger" plain style="float: right; margin-bottom: 14px">
+                        + 愿望清单
+                      </el-button>
                   </div>
                 </el-card>
               </el-col>
@@ -101,9 +101,6 @@
 <script>
 export default {
   data() {
-    // if (this.goodlist.goods_name.length() > 10) {
-    //   this.goodlist.goods_name = this.goodlist.goods_name.substr(0, 10)
-    // }
     return {
       // 类别的查询参数对象
       cateQueryInfo: {
@@ -121,6 +118,7 @@ export default {
       catelist: [],
       // 商品的数据列表，默认为空
       goodlist: [],
+      wishlist: [],
       activeIndex: '0',
       total: 0
     }
@@ -159,6 +157,37 @@ export default {
     handleCurrentChange(newPage) {
       this.goodQueryInfo.pagenum = newPage
       this.getGoodList()
+    },
+    pushWishlist() {
+      this.$router.push('/wishlist')
+    },
+    // 加入愿望清单
+    async addToWishlist(item) {
+      // 更新商品状态, 状态为1代表已加入愿望清单
+      const { data: res } = await this.$http.put(`goods/${item.goods_id}/state/1`)
+      if (res.meta.status !== 200) {
+        console.log(res.meta)
+        return this.$message.error('加入愿望清单失败！')
+      }
+
+      this.$message.success('添加成功')
+      console.log(res)
+      item.goods_state = 1
+    },
+    // 移出愿望清单
+    async removeFromWishlist(item) {
+      // 更新商品状态, 状态为0代表商品移出愿望清单
+      const { data: res } = await this.$http.put(`goods/${item.goods_id}/state/0`)
+      if (res.meta.status !== 200) {
+        console.log(res.meta)
+        return this.$message.error('移出愿望清单失败！')
+      }
+      this.$message.success('移出成功')
+      console.log(res)
+      item.goods_state = 0
+    },
+    logout() {
+      this.$router.push('/home')
     }
   }
 }
@@ -207,6 +236,11 @@ export default {
   img {
     width: 100%;
     height: 250px;
+  }
+  .goods-name {
+    height: 44px;
+    width: 150px;
+    margin-bottom: 10px;
   }
 }
 </style>

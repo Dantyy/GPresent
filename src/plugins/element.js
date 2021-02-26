@@ -23,7 +23,11 @@ import {
   Backtop,
   Pagination,
   Table,
-  TableColumn
+  TableColumn,
+  Badge,
+  Dialog,
+  InputNumber,
+  Switch
 } from 'element-ui'
 
 Vue.use(Button)
@@ -50,3 +54,7 @@ Vue.use(Backtop)
 Vue.use(Pagination)
 Vue.use(Table)
 Vue.use(TableColumn)
+Vue.use(Badge)
+Vue.use(Dialog)
+Vue.use(InputNumber)
+Vue.use(Switch)
