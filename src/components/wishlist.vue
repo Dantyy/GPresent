@@ -119,6 +119,9 @@ export default {
     },
     logout() {
       this.$router.push('/home')
+    },
+    pushGV() {
+      this.$router.push('/gv')
     }
   }
 }

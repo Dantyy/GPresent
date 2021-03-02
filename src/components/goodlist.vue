@@ -161,6 +161,9 @@ export default {
     pushWishlist() {
       this.$router.push('/wishlist')
     },
+    pushGV() {
+      this.$router.push('/gv')
+    },
     // 加入愿望清单
     async addToWishlist(item) {
       // 更新商品状态, 状态为1代表已加入愿望清单
