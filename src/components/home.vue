@@ -305,6 +305,8 @@ export default {
     pushWishlist() {
       if (this.tokenStr === '') {
         this.loginDialogVisible = true
+        this.login()
+        console.log(this.login.res)
       } else {
         this.$router.push('/wishlist')
       }

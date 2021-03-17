@@ -5,6 +5,16 @@
         <div>
           <img src="../assets/logo.png" alt="" class="logo"/>
         </div>
+        <div class="btns">
+          <!-- 愿望清单 & 邀请页面 -->
+            <el-button @click="pushWishlist" type="danger" plain>
+              <i class="el-icon-present" style="margin-right: 5px;"></i>
+              返回愿望清单
+            </el-button>
+            <el-button @click="pushGoodlist" type="danger" plain>
+              返回商品列表
+            </el-button>
+        </div>
       </el-header>
       <el-main>
         <!-- 产品展示 -->
@@ -71,6 +81,12 @@ export default {
         }
       }
       console.log(this.wishlist)
+    },
+    pushWishlist() {
+      this.$router.push('/wishlist')
+    },
+    pushGoodlist() {
+      this.$router.push('/goodlist')
     }
   }
 }
@@ -79,14 +95,19 @@ export default {
 <style lang="less" scoped>
 header {
   .logo {
-    display: block;
-    margin: 5px 35px;
+    float: left;
     height: 50px;
     width: 50px;
   }
-  border-bottom-color: rgb(202, 204, 208);
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
+  .btns{
+    position: relative;
+    float: right;
+    top: 50%;
+    margin-top: -20px;
+  }
+  height: 60px;
+  padding: 5px 100px;
+  background-color: rgb(241, 242, 243);
 }
 .goods {
   margin-bottom: 30px;

@@ -41,11 +41,9 @@
             </el-input>
           </el-col>
           <el-col :span="6">
-            <!-- 愿望清单 & 邀请页面 -->
-            <el-button @click="pushWishlist" type="danger" plain style="margin-top: 15px;">
-              <i class="el-icon-present" style="margin-right: 5px;"></i>
-              愿望清单
-              <i class="el-icon-arrow-right"></i>
+            <!-- 返回商品页 & 邀请页面 -->
+            <el-button @click="pushGoodlist" type="danger" plain style="margin-top: 15px;">
+              返回商品页
             </el-button>
             <el-button @click="pushGV" type="danger" plain style="margin-top: 15px;">
               邀请页面
@@ -57,13 +55,12 @@
       <el-main class="w">
         <!-- 购物车表单区域 -->
         <el-table :data="wishlist" stripe style="width: 100%;">
-          <el-table-column prop="goods_name" label="商品名称" width="600"> </el-table-column>
-          <el-table-column prop="goods_price" label="价格（元）" width="200"> </el-table-column>
-          <el-table-column label="是否显示" width="200">
-            <el-switch v-model="value" active-color="#13ce66" inactive-color="#F56C6C"> </el-switch>
-          </el-table-column>
-          <el-table-column label="操作" width="200">
-            <el-button size="mini" type="danger" round plain style="text-align: center;"> 删除 </el-button>
+          <el-table-column prop="goods_name" label="商品名称" width="700"> </el-table-column>
+          <el-table-column prop="goods_price" label="价格（元）" width="250"> </el-table-column>
+          <el-table-column label="操作" width="250">
+            <template slot-scope="scoped">
+              <el-button @click="delWishlist(scoped.row)" size="mini" type="danger" round plain style="text-align: center;"> 删除 </el-button>
+            </template>
           </el-table-column>
         </el-table>
       </el-main>
@@ -83,16 +80,14 @@ export default {
       },
       wishlistQueryInfo: {
         query: '',
-        pagenum: 1,
-        pagesize: 10
+        pagenum: 10,
+        pagesize: 100
       },
       goodlist: [],
       wishlist: [],
       total: 1,
       // 商品数量
-      num: 0,
-      // 是否显示在个人页面中显示
-      value: 0
+      num: 0
     }
   },
   created() {
@@ -112,16 +107,30 @@ export default {
       for (var item in this.goodlist) {
         if (this.goodlist.[item].goods_state === 1) {
           this.wishlist.push(this.goodlist.[item])
-          this.total = this.wishlist.length
         }
       }
-      console.log(this.wishlist)
     },
     logout() {
       this.$router.push('/home')
     },
+    pushGoodlist() {
+      this.$router.push('/goodlist')
+    },
     pushGV() {
       this.$router.push('/gv')
+    },
+    async delWishlist(item) {
+      // goods_state: “0” 时，wishlist产品删除成功
+      const { data: res } = await this.$http.put(`goods/${item.goods_id}/state/0`)
+      if (res.meta.status !== 200) {
+        console.log(res.meta)
+        return this.$message.error('从愿望清单中删除失败！')
+      }
+
+      this.$message.success('删除成功')
+      // console.log(res)
+      item.goods_state = 0
+      this.wishlist.pop(item)
     }
   }
 }
